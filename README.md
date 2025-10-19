@@ -1,2 +1,12 @@
-# CrochetByLess---Proyect-DAW
-This is a work about a business of my classmate. We created App web with JS, CSS, and MySQL
+# Crochet By Less — API & Web
+
+## Requisitos
+- Node 20+
+- MySQL 8 (WAMP/XAMPP)
+- npm
+
+## Setup Backend
+```bash
+cp .env.example .env   # edita valores
+npm i
+npm run dev            # nodemon

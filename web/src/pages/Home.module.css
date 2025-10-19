@@ -1,0 +1,101 @@
+/* Wrapper de la página */
+.root {
+  display: block;
+}
+
+/* ===== Pills de categorías ===== */
+.pills {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.pill {
+  background: var(--rosa-palido);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-weight: 600;
+  text-decoration: none; /* por si es Link */
+}
+
+/* ===== HERO: izquierda (copy/CTA) + derecha (novedades) ===== */
+.hero {
+  display: grid;
+  grid-template-columns: 2fr 1.2fr;
+  gap: 16px;
+}
+
+.heroCard {
+  display: grid;
+  grid-template-columns: minmax(140px, 180px) 1fr;
+  gap: 16px;
+}
+
+.heroImage {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 12px;
+  background: var(--lila-claro);
+}
+
+/* Novedades: lista compacta (una columna de cards pequeñas) */
+.newsList {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.newsItem {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 10px;
+  padding: 10px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.newsThumb {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* ===== Bloques informativos (3 columnas) ===== */
+.infoGrid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* ===== Extras (2 columnas) ===== */
+.extraGrid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 1fr 1fr;
+}
+
+/* ===== Responsivo ===== */
+@media (max-width: 1024px) {
+  .hero {
+    grid-template-columns: 1.8fr 1fr;
+  }
+}
+
+@media (max-width: 840px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+  .infoGrid {
+    grid-template-columns: 1fr;
+  }
+  .extraGrid {
+    grid-template-columns: 1fr;
+  }
+  .heroCard {
+    grid-template-columns: 120px 1fr;
+  }
+}

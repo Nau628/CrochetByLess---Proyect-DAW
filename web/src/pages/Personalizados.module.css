@@ -1,0 +1,53 @@
+.root { /* wrapper de la página */
+  display: block;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 16px;
+}
+@media (max-width: 900px){
+  .hero { grid-template-columns: 1fr; }
+}
+
+.heroCard {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 16px;
+  align-items: center;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 900px){
+  .formGrid { grid-template-columns: 1fr; }
+}
+
+.field { display:flex; flex-direction:column; gap:6px; margin-bottom:10px; }
+.input, .select, .textarea {
+  padding:10px; border:1px solid var(--border); border-radius:12px; background:#fff;
+}
+.error { font-size:12px; color:crimson; }
+
+.preview { display:flex; flex-direction:column; gap:10px; }
+
+.acBox { position: relative; }
+.acList{
+  position: absolute; z-index: 10; background:#fff; border:1px solid var(--border);
+  border-radius:12px; margin-top:4px; width:100%; box-shadow:0 6px 20px rgba(0,0,0,.06);
+}
+.acItem{ padding:8px 10px; cursor:pointer; }
+.acItem:hover{ background: var(--rosa-palido); }
+
+.logo {
+  width:100%;
+  border-radius:12px;
+  background: var(--rosa-palido);
+  object-fit: cover;
+}
+
+.ctaRow { display:flex; gap:10px; }
