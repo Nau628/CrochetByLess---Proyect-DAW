@@ -1,0 +1,258 @@
+Crochet By Less — Guía de instalación y ejecución
+0) Descripción
+
+Backend (API): Node.js + Express + MySQL
+
+Frontend (Web): React + Vite
+
+BD: MySQL (InnoDB, UTF8MB4)
+
+Auth: JWT (roles admin / cliente)
+
+Esta guía permite levantar el proyecto en otra computadora en minutos.
+
+1) Requisitos
+
+Node.js 18+ (recomendado 20+) — trae npm incluido
+
+MySQL 8 (XAMPP/WAMP/MAMP) en puerto 3306
+
+Un cliente para probar APIs (Thunder Client, Postman o curl)
+
+2) Estructura del repositorio
+/ (raíz del repo)
+  crochet-api/          # Backend (Express)
+    .env.example
+    src/
+  web/                  # Frontend (React + Vite)
+    .env.example
+    index.html
+    src/
+  db_schema_final.sql   # Script SQL de esquema + semillas mínimas
+  README_FOR_TEAM.md    # Este archivo
+
+
+Importante: el repo incluye .env.example. Nunca subas .env reales.
+
+3) Base de datos (MySQL)
+
+Abrir phpMyAdmin (o MySQL Workbench).
+
+Ejecutar el script: db_schema_final.sql (crea BD, tablas, claves foráneas con CASCADE y datos mínimos).
+
+Si prefieres manual:
+
+Crea BD crochetbyless
+
+Ejecuta todo el contenido del archivo.
+
+Usuarios demo creados por el script:
+
+Admin: admin@crochet.test / 123456
+
+Cliente: cliente2@crochet.test / 123456
+
+Si no quieres semillas, elimina la sección “SEMILLAS MÍNIMAS” del SQL.
+
+4) Backend (API)
+
+Instalar dependencias
+
+cd crochet-api
+npm install
+
+
+Variables de entorno
+Copia y edita el archivo de ejemplo:
+
+cp .env.example .env
+
+
+Contenido recomendado:
+
+DB_HOST=localhost
+DB_USER=root
+DB_PASS=
+DB_NAME=crochetbyless
+DB_PORT=3306
+PORT=3000
+
+JWT_SECRET=cadena_unica_segura
+CORS_ORIGIN=http://localhost:5173
+
+# WhatsApp de la tienda (formato internacional sin '+')
+PHONE_SHOP=50361739697
+
+
+Levantar la API (modo dev)
+
+npm run dev
+
+
+Abre: http://localhost:3000
+
+Debe responder: “Crochet By Less API funcionando <3”
+
+5) Frontend (Web)
+
+Instalar dependencias
+
+cd web
+npm install
+
+
+Variables de entorno
+
+cp .env.example .env
+
+
+Contenido:
+
+VITE_API_URL=http://localhost:3000
+
+
+Levantar la web (modo dev)
+
+npm run dev
+
+
+Abre: http://localhost:5173
+
+Si no cargan imágenes locales, asegúrate de que existan en web/public/img/... con las mismas rutas que guarda la BD (p. ej. /img/amigurumis/amigurumi1.jpg).
+
+6) Pruebas rápidas de API
+6.1 Login
+
+POST http://localhost:3000/api/auth/login
+Headers: Content-Type: application/json
+Body:
+
+{ "email": "admin@crochet.test", "password": "123456" }
+
+
+Respuesta OK (ejemplo):
+
+{
+  "token": "JWT_AQUI",
+  "user": { "id_usuario": 1, "email": "admin@crochet.test", "rol": "admin" }
+}
+
+
+Guarda el token para rutas protegidas:
+Authorization: Bearer JWT_AQUI
+
+6.2 Categorías
+
+GET http://localhost:3000/api/categorias
+
+6.3 Productos (filtros/orden/paginación)
+
+GET http://localhost:3000/api/productos?categoria=4&sort=price_asc&page=1&limit=12
+
+6.4 Detalle
+
+GET http://localhost:3000/api/productos/13
+
+6.5 Pedidos personalizados (público)
+
+POST http://localhost:3000/api/pedidos-personalizados
+Body:
+
+{
+  "nombre_cliente": "Ana",
+  "telefono_cliente": "50370000000",
+  "descripcion_detalle": "Un amigurumi con bufanda lila",
+  "id_producto": 13
+}
+
+
+Devuelve registro + whatsapp con texto preparado. En la web, Checkout también genera enlace a WhatsApp.
+
+7) Roles y acceso
+
+Cliente: navega catálogo, detalle, carrito, checkout, crea pedidos personalizados.
+
+Admin: además, accede a /admin (panel) y rutas protegidas:
+
+CRUD de productos/categorías
+
+(Opcional) subida de imágenes con Multer/Cloudinary
+
+Ver/gestionar pedidos personalizados
+
+El front usa guards para ocultar y bloquear rutas admin si rol !== 'admin'.
+
+8) Problemas comunes (y solución)
+
+401 en login
+
+Email/clave incorrectos o campo password sin hash bcrypt.
+
+Usa los usuarios demo o inserta un nuevo usuario con hash (ya incluido en el SQL de semillas).
+
+CORS bloquea requests
+
+En .env de API, CORS_ORIGIN debe ser exactamente http://localhost:5173.
+
+Reinicia la API tras cambiar .env.
+
+Pantalla en blanco / errores de import
+
+Revisa consola del navegador y terminal de vite.
+
+Verifica VITE_API_URL en web/.env.
+
+No carga imágenes
+
+Si la ruta en la BD es /img/..., la imagen debe existir en web/public/img/....
+
+Nombres y mayúsculas/minúsculas deben coincidir.
+
+Conexión a MySQL falla
+
+MySQL corriendo en 3306.
+
+Usuario/clave en .env correctos (root / sin contraseña en local por defecto).
+
+9) Deploy (opcional)
+
+API → Railway/Render (Node 20).
+
+Variables: DB_*, JWT_SECRET, CORS_ORIGIN (URL del front en prod), PHONE_SHOP.
+
+Si usas imágenes persistentes → Cloudinary (3 variables) en API.
+
+Web → Netlify/Vercel.
+
+VITE_API_URL apuntando a la URL de la API.
+
+Reconstruir después de cambiar envs.
+
+10) Usuarios demo
+
+Admin: admin@crochet.test / 123456
+
+Cliente: cliente2@crochet.test / 123456
+
+11) Comandos útiles (resumen)
+
+API
+
+cd crochet-api
+npm install
+cp .env.example .env
+npm run dev
+
+
+WEB
+
+cd web
+npm install
+cp .env.example .env
+npm run dev
+
+12) Contacto / soporte interno
+
+WhatsApp del emprendimiento (para pruebas de checkout): +503 6173 9697
+
+Si algo falla, revisa primero .env, consola y logs de API; luego abre un issue en GitHub con captura de error.
